@@ -1,5 +1,13 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}" />
+
 <h1>INPUT</h1>
 
 <form method="" action="counter">
   <textarea name="text" rows="25" cols="50"> </textarea><input type="submit" />
 </form>
+
+{% for feature in features %}
+<h2>{{feature.name}}</h2>
+<h2>{{feature.details}}</h2>
+{% endfor %}
