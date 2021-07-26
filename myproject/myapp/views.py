@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.contrib.auth.models import User, auth
+from django.contrib import messages
 from .models import Features
 # Create your views here.
 def index(request):
@@ -25,3 +27,19 @@ def counter(request):
     }
     return render(request, "counter.html", context)
 
+def register(req):
+    if req.method == 'POST':
+        username = req.POST['username']
+        email = req.POST['email']
+        password = req.POST['password']
+        if User.objects.filter(email=email).exists():
+            messages.info(req, 'email exists')
+            return redirect('register')
+        elif User.objects.filter(username=username).exists():
+            messages.info(req, 'username exists')
+            return redirect('register')
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+            return redirect('login')
+    return render(req,"register.html")
